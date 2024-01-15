@@ -1,0 +1,11 @@
+{
+  "name": "bloglist-ci-cd",
+  "version": "0.0.1",
+  "description": "Full Stack Open part 11 Bloglist app with CI/CD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "binh nguyen",
+  "license": "ISC"
+}
