@@ -1,0 +1,21 @@
+### TODO: GET all blogs
+GET http://localhost:3003/api/blogs
+
+
+### TODO: POST a blog
+POST http://localhost:3003/api/blogs
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NDg3MzEzZjAxYjE1MDA3N2U5OWJiYjciLCJpYXQiOjE2ODY1ODE2MTMsImV4cCI6MTY4NjU4NTIxM30.wxyXn-nUDRWRe7IgAwHjTErR_UF_e6P6-zWPBf1VPZ8
+
+{
+    "title": "This is a test",               
+    "author": "Open Fullstack",
+    "url": "https://fullstackopen.com/en/part3/validation_and_es_lint#lint",
+    "likes": 2
+}
+
+### TODO: DELETE a blog
+DELETE http://localhost:3003/api/blogs/6450e5889cf87d07451869f7
+Content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NDUwY2QyYzdiYjI4OGQ0MjIwZGRjNmIiLCJpYXQiOjE2ODMwMzkxMDMsImV4cCI6MTY4MzA0MjcwM30.6RlpGoJ9crSxcbjX-17hXV3XnKmXtYHU6rUIJeqViBE
+

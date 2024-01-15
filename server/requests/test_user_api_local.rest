@@ -1,0 +1,23 @@
+### TODO: GET all users
+GET http://localhost:3003/api/users
+
+
+### TODO: POST a user
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+    "username": "binhfnef",
+    "name": "binh",
+    "password": "123456"
+}
+
+### TODO: POST an another user
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+    "username": "nguyen",
+    "name": "ben",
+    "password": "123456"
+}

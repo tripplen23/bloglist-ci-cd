@@ -1,12 +1,10 @@
 {
-  "name": "bloglist-ci-cd",
-  "version": "0.0.1",
-  "description": "Full Stack Open part 11 Bloglist app with CI/CD",
+  "name": "blog_list",
+  "version": "1.0.0",
   "main": "index.js",
-  "author": "binh nguyen",
-  "license": "ISC",
+  "author": "Binh Nguyen",
+  "license": "MIT",
   "scripts": {
-    "build:pwsh": "pwsh build_steps.ps1",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
