@@ -9,12 +9,11 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:cypress/recommended',
   ],
-  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 2018,
+    ecmaVersion: 2021,
     sourceType: 'module',
   },
   settings: {
@@ -36,4 +35,4 @@ module.exports = {
     'react/prop-types': 0,
     'no-extra-semi': 0,
   },
-};
+}

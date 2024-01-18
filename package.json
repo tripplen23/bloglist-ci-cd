@@ -12,13 +12,15 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.js\" \"**/*.json\"",
     "start:test": "NODE_ENV=test node index.js",
+    "start:client": "cd client && npm start",
     "build:client": "cd client && npm run build",
     "build": "cd client && npm install && npm run build",
     "lint:client": "cd client && npm run build",
     "lint:all": "npm run lint && npm run lint:client",
     "test:client": "cd client && npm run test",
     "test:all": "npm run test && npm run test:client",
-    "test:e2e": "cd client && npm run test:e2e"
+    "test:e2e": "cd client && npm run test:e2e",
+    "install:all": "npm install && cd client && npm install"
   },
   "keywords": [
     "fullstack-open-2024",

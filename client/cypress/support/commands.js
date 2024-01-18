@@ -3,10 +3,10 @@ Cypress.Commands.add('login', ({ username, password }) => {
     username,
     password,
   }).then(({ body }) => {
-    localStorage.setItem('loggedBlogappUser', JSON.stringify(body));
-    cy.visit('');
-  });
-});
+    localStorage.setItem('loggedBlogappUser', JSON.stringify(body))
+    cy.visit('')
+  })
+})
 
 Cypress.Commands.add('createBlog', ({ title, author, url }) => {
   cy.request({
@@ -18,7 +18,7 @@ Cypress.Commands.add('createBlog', ({ title, author, url }) => {
         JSON.parse(localStorage.getItem('loggedBlogappUser')).token
       }`,
     },
-  });
+  })
 
-  cy.visit('');
-});
+  cy.visit('')
+})

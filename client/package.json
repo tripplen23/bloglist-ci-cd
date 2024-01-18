@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "axios": "^1.2.3",
-    "babel-eslint": "^10.1.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "jwt-decode": "^3.1.2",
     "prettier": "^2.8.8",
@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "eslint .",
+    "lint": "eslint .",
     "format": "prettier --write \"**/*.js\" \"**/*.json\"",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run"
@@ -50,7 +50,7 @@
     "babel-jest": "^29.7.0",
     "cypress": "^12.16.0",
     "eslint-plugin-cypress": "^2.15.1",
-    "eslint-plugin-jest": "^27.2.2",
+    "eslint-plugin-jest": "^27.6.3",
     "eslint-plugin-react-refresh": "^0.4.5",
     "json-server": "^0.17.3"
   },

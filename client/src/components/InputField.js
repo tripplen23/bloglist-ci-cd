@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './InputField.module.css';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styles from './InputField.module.css'
 
 const InputField = ({ htmlFor, label, type, value, onChange, name }) => (
   <div className={styles.container}>
@@ -17,9 +17,9 @@ const InputField = ({ htmlFor, label, type, value, onChange, name }) => (
       onChange={onChange}
     />
   </div>
-);
+)
 
-export default InputField;
+export default InputField
 
 InputField.propTypes = {
   htmlFor: PropTypes.string.isRequired,
@@ -28,4 +28,4 @@ InputField.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string,
-};
+}
