@@ -1,120 +1,135 @@
 describe('Blog app', function () {
+  // TODO: Register user to server
   beforeEach(function () {
-    cy.visit('');
-    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`);
+    cy.visit('')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
     const user = {
       name: 'Duc Binh',
       username: 'Binh',
       password: '123123',
-    };
-    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user);
-  });
+    }
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+  })
 
   // Test if connect successfully
   it('front page can be opened', function () {
-    cy.contains('Blogs');
-  });
+    cy.contains('Login to application')
+  })
 
   // 5.17
   it('Login form is shown', function () {
-    cy.get('.loginForm').should('exist');
-  });
+    cy.contains('Login to application')
+    cy.get("input[name='username']")
+    cy.get("input[name='password']")
+  })
 
   // 5.18
   describe('Login', function () {
     it('succeeds with correct credentials', function () {
-      cy.get('#username').type('Binh');
-      cy.get('#password').type('123123');
-      cy.get('#login-btn').click();
-      cy.contains('Duc Binh logged in');
-    });
+      cy.get('#username').type('Binh')
+      cy.get('#password').type('123123')
+      cy.get('button[type="submit"]').click()
+      cy.contains('Duc Binh succesfully logged in')
+      cy.contains('Binh logged in')
+    })
 
     it('fails with wrong credentials', function () {
-      cy.get('#username').type('Binh');
-      cy.get('#password').type('123456');
-      cy.get('#login-btn').click();
+      cy.get('#username').type('Binh')
+      cy.get('#password').type('123456')
+      cy.get('button[type="submit"]').click()
 
-      cy.get('.error')
-        .should('contain', 'invalid username or password')
-        .and('have.css', 'color', 'rgb(255, 0, 0)')
-        .and('have.css', 'border-style', 'solid');
-    });
-  });
+      cy.contains('wrong username or password')
+        .should('have.css', 'border-color', 'rgb(249, 3, 3)')
+        .and('have.css', 'background-color', 'rgb(255, 224, 222)')
+    })
+  })
 
   describe('When logged in', function () {
     beforeEach(function () {
-      cy.login({ username: 'Binh', password: '123123' });
-    });
+      cy.login({ username: 'Binh', password: '123123' })
+      cy.get('#username').type('Binh')
+      cy.get('#password').type('123123')
+      cy.get('button[type="submit"]').click()
+    })
 
     // 5.19
     it('A blog can be created', function () {
-      cy.contains('new blog').click();
-      cy.get('#title').type('cypress is the best!');
-      cy.get('#author').type('Binh Nguyen');
-      cy.get('#url').type('www.cypress.com');
-      cy.get('#create-blog-btn').click();
+      cy.contains('New Blog').click()
+      cy.get('input[name="title"]').type('cypress is the best!')
+      cy.get('input[name="author"]').type('Binh Nguyen')
+      cy.get('input[name="url"]').type('www.cypress.com')
+      cy.get('button[type="submit"]').click()
 
-      cy.contains('cypress is the best!');
-    });
+      cy.contains('cypress is the best!')
+    })
 
-    describe('and several blogs exist', function () {
+    describe('and a blog exists', function () {
       beforeEach(function () {
         cy.createBlog({
-          title: 'another blog cypress 1',
-          author: 'Ben',
-          url: 'www.cypress.com',
-        });
+          title: 'Cypress creating a new blog',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+        })
+      })
+
+      it('A user can like a blog', function () {
+        cy.contains('View').click()
+        cy.get('[data-cy="likes"]').should('contain', 0)
+        cy.get('[data-cy="like-btn"]').click()
+        cy.get('[data-cy=likes]').should('contain', 1)
+      })
+
+      it('A user who created the blog can delete it', function () {
+        cy.contains('View').click()
+        cy.contains('Cypress creating a new blog')
+        cy.contains('Remove').click()
+        cy.contains('Cypress creating a new blog').should('not.exist')
+      })
+    })
+
+    describe('and multiple blogs exists', function () {
+      beforeEach(function () {
         cy.createBlog({
-          title: 'another blog cypress 2',
-          author: 'Ben',
-          url: 'www.cypress.com',
-        });
+          title: 'Cypress creating a new blog',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+          likes: 15,
+        })
         cy.createBlog({
-          title: 'another blog cypress 3',
-          author: 'Ben',
-          url: 'www.cypress.com',
-        });
-      });
+          title: 'Second blog created',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+          likes: 0,
+        })
+        cy.createBlog({
+          title: 'Third blog created',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+          likes: 2,
+        })
+      })
 
-      // 5.20
-      it(' users can like a blog', function () {
-        cy.contains('another blog cypress 2').parent().find('button').click();
-        cy.get('#like-btn').click();
-      });
+      it('Blogs are ordered based on number of likes, in descending order (from most likes till least likes)', function () {
+        cy.get('[data-cy="blog"]').then(($blog) => {
+          expect($blog).to.have.length(3)
 
-      // 5.21
-      it(' user can delete a blog', function () {
-        cy.contains('another blog cypress 3').parent().find('button').click();
-        cy.get('#like-btn').click();
-        cy.get('#delete-btn').click();
-
-        cy.get('.success')
-          .should('have.css', 'color', 'rgb(0, 128, 0)')
-          .and('have.css', 'border-style', 'solid');
-        cy.get('html').should('not.contain', 'another blog cypress 3');
-      });
-
-      // 5.22
-      it(' Another user cannot see the delete button', function () {
-        cy.contains('Logout').click();
-        cy.login({ username: 'Binh', password: '123123' });
-        cy.contains('show').click();
-        cy.should('not.contain', 'delete');
-      });
-
-      // 5.23
-      it.only(' Checks that the blogs are ordered according to likes with the blog with the most likes being first.', function () {
-        cy.contains('another blog cypress 3').parent().find('button').click();
-        cy.get('#like-btn').click().wait(500).click().wait(500);
-        cy.contains('another blog cypress 3').parent().find('button').click();
-
-        cy.contains('another blog cypress 1').parent().find('button').click();
-        cy.get('#like-btn').click().wait(500).click().wait(500).click();
-
-        cy.get('.blog').eq(0).should('contain', 'another blog cypress 1');
-        cy.get('.blog').eq(1).should('contain', 'another blog cypress 3');
-        cy.get('.blog').eq(2).should('contain', 'another blog cypress 2');
-      });
-    });
-  });
-});
+          for (let i = 0; i < $blog.length; i++) {
+            // Check if the number of likes of current blog is higher than or equal to that of next blog
+            if (i < $blog.length - 1) {
+              expect(
+                Number($blog.find('[data-cy="likes"]')[i].innerText),
+              ).to.be.least(
+                Number($blog.find('[data-cy="likes"]')[i + 1].innerText),
+              )
+              // Check if number of likes of last blog is lower than or equal to that of first blog
+            } else {
+              expect(
+                Number($blog.find('[data-cy="likes"]')[i].innerText),
+              ).to.be.most(Number($blog.find('[data-cy="likes"]')[0].innerText))
+            }
+          }
+        })
+      })
+    })
+  })
+})

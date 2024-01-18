@@ -5,6 +5,8 @@
   "type": "module",
   "dependencies": {
     "axios": "^1.2.3",
+    "babel-eslint": "^10.1.0",
+    "eslint-plugin-react": "^7.33.2",
     "jwt-decode": "^3.1.2",
     "prettier": "^2.8.8",
     "prop-types": "^15.8.1",
@@ -16,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(axios)/)'",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint .",
     "format": "prettier --write \"**/*.js\" \"**/*.json\"",
@@ -25,8 +27,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -43,11 +44,10 @@
   },
   "proxy": "http://localhost:3003",
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.22.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "babel-jest": "^29.7.0",
     "cypress": "^12.16.0",
     "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-jest": "^27.2.2",

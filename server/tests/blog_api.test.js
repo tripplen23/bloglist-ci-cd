@@ -16,6 +16,7 @@ beforeEach(async () => {
   }
 }, 100000)
 
+// TODO: Test GET method in api /api/blogs
 describe('(200) When there is initially some blogs saved', () => {
   test('blogs are returned as json', async () => {
     await api
@@ -45,6 +46,7 @@ describe('(200) When there is initially some blogs saved', () => {
   })
 })
 
+// TODO: Test GET method in api /api/blogs/:id
 describe('Viewing the specific blog', () => {
   test('(200) Get a specific blog', async () => {
     const blogsAtStart = await helper.blogsInDb()
@@ -56,6 +58,7 @@ describe('Viewing the specific blog', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(resultBlog.body).toEqual(blogToView)
+    expect(resultBlog.body.title).toContain('Javascript is fun')
   })
 
   test('(404) the blog dose not exist', async () => {
@@ -71,6 +74,7 @@ describe('Viewing the specific blog', () => {
   })
 })
 
+// TODO: Test POST method in api /api/blogs
 describe('Addition of a new blog', () => {
   let token = null
   beforeAll(async () => {
@@ -202,6 +206,7 @@ describe('Addition of a new blog', () => {
   })
 })
 
+// TODO: Test DELETE method in api /api/blogs/:id
 describe('Deletion of a blog', () => {
   let token = null
   beforeEach(async () => {
@@ -277,6 +282,7 @@ describe('Deletion of a blog', () => {
   })
 })
 
+// TODO: Test PUT method in api /api/blogs/:id
 describe('Update of a blog', () => {
   test('(200) Update likes number of a blog successfully', async () => {
     const blogsAtStart = await helper.blogsInDb()

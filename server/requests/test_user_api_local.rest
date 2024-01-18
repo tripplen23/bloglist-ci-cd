@@ -1,7 +1,6 @@
 ### TODO: GET all users
 GET http://localhost:3003/api/users
 
-
 ### TODO: POST a user
 POST http://localhost:3003/api/users
 Content-type: application/json

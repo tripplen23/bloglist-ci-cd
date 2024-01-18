@@ -1,48 +1,67 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import InputField from './InputField.js'
+import styles from './LoginForm.module.css'
+import Button from './Button.js'
 
 const LoginForm = ({ handleLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [inputValue, setInputValue] = useState(null)
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    handleLogin(username, password);
-    setUsername('');
-    setPassword('');
-  };
+  const handleInputChange = (event) => {
+    const target = event.target
+    const value = target.value
+    const name = target.name
+
+    setInputValue((prevValues) => {
+      return {
+        ...prevValues,
+        [name]: value,
+      }
+    })
+  }
+
+  const login = (event) => {
+    event.preventDefault()
+    const username = inputValue?.username
+    const password = inputValue?.password
+
+    try {
+      handleLogin(username, password)
+
+      // reset input values
+      setInputValue({ username: '', password: '' })
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className='loginForm'>
-        username
-        <input
-          id='username'
-          type='text'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id='password'
-          type='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id='login-btn' type='submit'>
+    <form onSubmit={login}>
+      <InputField
+        label="Username"
+        type="text"
+        name="username"
+        htmlFor="username"
+        value={inputValue?.username || ''}
+        onChange={handleInputChange}
+      />
+      <InputField
+        label="Password"
+        type="password"
+        name="password"
+        htmlFor="password"
+        value={inputValue?.password || ''}
+        onChange={handleInputChange}
+      />
+      <Button className={styles.loginBtn} type="submit">
         Login
-      </button>
+      </Button>
     </form>
-  );
-};
+  )
+}
+
+export default LoginForm
 
 LoginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired,
-};
-
-export default LoginForm;
+}

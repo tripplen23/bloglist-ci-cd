@@ -1,11 +1,14 @@
 ### TODO: GET all blogs
 GET http://localhost:3003/api/blogs
 
+### TODO: GET blog by id
+GET http://localhost:3003/api/blogs/65a6684a30e7fed4fd66836e
+
 
 ### TODO: POST a blog
 POST http://localhost:3003/api/blogs
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NDg3MzEzZjAxYjE1MDA3N2U5OWJiYjciLCJpYXQiOjE2ODY1ODE2MTMsImV4cCI6MTY4NjU4NTIxM30.wxyXn-nUDRWRe7IgAwHjTErR_UF_e6P6-zWPBf1VPZ8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NWE1NzdlZTI0YWVmZjEyNTlmNWM4NmEiLCJpYXQiOjE3MDU0MDQ0NjIsImV4cCI6MTcwNTQwODA2Mn0.iW217Y2Pmq2AMw6PQdbSEE7U_x3zPjOol_PSFGU85B4
 
 {
     "title": "This is a test",               
@@ -14,8 +17,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpb
     "likes": 2
 }
 
-### TODO: DELETE a blog
-DELETE http://localhost:3003/api/blogs/6450e5889cf87d07451869f7
+### TODO: POST a blog 2
+POST http://localhost:3003/api/blogs
 Content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NDUwY2QyYzdiYjI4OGQ0MjIwZGRjNmIiLCJpYXQiOjE2ODMwMzkxMDMsImV4cCI6MTY4MzA0MjcwM30.6RlpGoJ9crSxcbjX-17hXV3XnKmXtYHU6rUIJeqViBE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NWE1NzdlZTI0YWVmZjEyNTlmNWM4NmEiLCJpYXQiOjE3MDU0MjczMDQsImV4cCI6MTcwNTQzMDkwNH0.7t-aoL0nBJFnJLA-VAIhURsnBbBi1C9jU9hF1ZSI5sc
 
+{
+    "title": "This is a test 2",               
+    "author": "Open Fullstack",
+    "url": "https://fullstackopen.com/en/part3/validation_and_es_lint#lint",
+    "likes": 2
+}
+
+### TODO: DELETE a blog
+DELETE http://localhost:3003/api/blogs/65a6c768a495b072fa9b6786
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NWE1NzdlZTI0YWVmZjEyNTlmNWM4NmEiLCJpYXQiOjE3MDU0MjczMDQsImV4cCI6MTcwNTQzMDkwNH0.7t-aoL0nBJFnJLA-VAIhURsnBbBi1C9jU9hF1ZSI5sc
+
+### TODO: PUT / Update a blog
+PUT http://localhost:3003/api/blogs/65a6c768a495b072fa9b6786
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NWE1NzdlZTI0YWVmZjEyNTlmNWM4NmEiLCJpYXQiOjE3MDU0MjczMDQsImV4cCI6MTcwNTQzMDkwNH0.7t-aoL0nBJFnJLA-VAIhURsnBbBi1C9jU9hF1ZSI5sc
+
+{
+    "likes": 9
+}

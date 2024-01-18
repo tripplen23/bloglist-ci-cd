@@ -1,73 +1,98 @@
-import React from 'react';
-import { useState } from 'react';
-import blogService from '../services/blogs.js';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import styles from './Blog.module.css'
+import Button from './Button.js'
 
-const Blog = ({ blog, updateLikes, deleteBlog, username }) => {
-  // Style the blog
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-  const [visible, setVisible] = useState(false);
+const Blog = ({ blog, updateLike, removeBlog, user }) => {
+  const [expanded, setExpanded] = useState(false)
+  const [postedBy, setPostedBy] = useState('')
+  const [username, setUsername] = useState('')
 
-  const userId = blogService.getUserId();
+  const toggleExpanded = () => {
+    setExpanded(!expanded)
+  }
 
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
-
-  const handleLike = () => {
-    const blogToUpdate = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
+  const update = () => {
+    const { id, author, url, title } = blog
+    const updatedBlog = {
+      user: blog.user?.id || blog.user,
       likes: blog.likes + 1,
-    };
-    updateLikes(blog.id, blogToUpdate);
-  };
-
-  const handleDelete = () => {
-    // Confirmation dialog for deleting
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      deleteBlog(blog.id);
+      title,
+      author,
+      url,
     }
-  };
+
+    setPostedBy(postedBy || blog.user?.name)
+    setUsername(username || blog.user?.username)
+    updateLike(id, updatedBlog)
+  }
+
+  const deleteBlog = () => {
+    const { id } = blog
+
+    removeBlog(id)
+  }
 
   return (
-    <div className='blog' style={blogStyle}>
-      <div>
-        <span className='title'>{blog.title} - </span>
-        <span className='author'>{blog.author}</span>
-        <button id='view-btn' onClick={toggleVisibility}>
-          {visible ? 'hide' : 'show'}
-        </button>
-      </div>
-
-      {/* Children prop */}
-      {visible && (
-        <div className='blog-details'>
-          <div>{blog.url}</div>
-          <div>
-            likes: {blog.likes}{' '}
-            <button id='like-btn' onClick={handleLike}>
-              like
-            </button>{' '}
-          </div>
-          {/* 5.8 Indicating the User information */}
-          <div>UserID: {userId}</div>
-          <div>UserName: {username}</div>
-          {blog.user === userId && blog.user.username === username && (
-            <button id='delete-btn' onClick={handleDelete}>
-              Delete
-            </button>
-          )}
+    <div data-cy="blog" className={styles.blog}>
+      <span className={styles.title}>{blog.title}</span>
+      <span className={styles.posted}>Author: </span>
+      <span className={styles.author}>{blog.author}</span>
+      <Button
+        onClick={toggleExpanded}
+        className={expanded ? styles.hide : styles.btn}
+      >
+        View
+      </Button>
+      <Button
+        onClick={toggleExpanded}
+        className={expanded ? styles.btn : styles.hide}
+      >
+        Hide
+      </Button>
+      <div data-testid="hidden-content" className={expanded ? '' : styles.hide}>
+        <div>
+          <a href={blog.url} className={styles.url}>
+            {blog.url}
+          </a>
         </div>
-      )}
-    </div>
-  );
-};
 
-export default Blog;
+        <span className={styles.likesText}>Likes</span>
+        <span data-cy="likes" className={styles.likes}>
+          {blog.likes}
+        </span>
+        <Button dataCy="like-btn" onClick={update} className={styles.btn}>
+          Like
+        </Button>
+        <div>
+          <span className={styles.posted}>Posted by: </span>
+          <span className={styles.author}> {blog.user?.name || postedBy}</span>
+        </div>
+        {(blog.user?.username === user.username ||
+          username === user.username) && (
+          <Button onClick={deleteBlog} className={styles.removeBtn}>
+            Remove
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default Blog
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number,
+  }),
+  updateLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    token: PropTypes.string,
+    username: PropTypes.string,
+    name: PropTypes.string,
+  }),
+}

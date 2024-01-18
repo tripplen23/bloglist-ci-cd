@@ -1,60 +1,73 @@
-import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import Blog from './Blog';
+import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+import { render, act } from '@testing-library/react'
+import { fireEvent } from '@testing-library/dom'
+import Blog from './Blog.js'
 
 describe('<Blog />', () => {
+  let component
   const blog = {
-    title: 'Title',
-    author: 'Author',
-    url: 'https://www.frontendtest.com/',
+    author: 'Just me',
+    title: 'Blog title',
+    url: 'http://blog-title.com',
     likes: 0,
-    user: {
-      username: 'binhfnef',
-      name: 'binh',
-    },
-  };
+  }
 
-  let component;
-  const mockLikesHandler = jest.fn();
+  const user = {
+    username: 'jane',
+    name: 'Jane Doe',
+  }
+
+  const mockHandlerUpdate = jest.fn()
+  const mockHandlerRemove = jest.fn()
+
   beforeEach(() => {
     component = render(
-      <Blog key={blog.id} blog={blog} updateLikes={mockLikesHandler} />
-    );
-  });
+      <Blog
+        user={user}
+        removeBlog={mockHandlerRemove}
+        updateLike={mockHandlerUpdate}
+        blog={blog}
+      />,
+    )
+  })
 
-  test('Rendering title and author of each post but not url or likes by default', () => {
-    expect(component.container.querySelector('.title')).toHaveTextContent(
-      blog.title
-    );
-    expect(component.container.querySelector('.author')).toHaveTextContent(
-      blog.author
-    );
+  test('renders blog title and author, but not url and number of likes by default', () => {
+    const defaultBlogContent = component.container.querySelector('.blog')
+    const defaultHiddenContent = component.getByTestId('hidden-content')
 
-    expect(component.queryByText(blog.url)).not.toBeInTheDocument();
-    expect(component.queryByText('like')).not.toBeInTheDocument();
-    screen.debug();
-  });
+    expect(component.container).toHaveTextContent(blog.title)
+    expect(defaultBlogContent).not.toHaveStyle('display: none')
+    expect(defaultBlogContent).toBeVisible()
+    expect(defaultHiddenContent).toHaveClass('hide')
+  })
 
-  test('Rendering URL and number of likes when view button is clicked', async () => {
-    const viewButton = component.container.querySelector('.view-btn');
-    await userEvent.click(viewButton);
+  test('renders blog url and number of likes when view button is clicked', () => {
+    const button = component.getByText('View')
 
-    expect(component.queryByText(blog.url)).toBeInTheDocument();
-    expect(component.queryByText('like')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(button)
+    })
 
-    screen.debug();
-  });
+    const revealedContent = component.getByTestId('hidden-content')
+    const likes = component.container.querySelector('.likes')
 
-  test('If the like button is clicked twice, the event handler is called twice', async () => {
-    const viewButton = component.queryByText('show');
-    await userEvent.click(viewButton);
+    expect(revealedContent).not.toHaveStyle('display: none')
+    expect(revealedContent).not.toHaveClass('hide')
+    expect(revealedContent).toBeVisible()
+    expect(component.container).toHaveTextContent('Likes')
+    expect(likes).toHaveTextContent(blog.likes)
+    expect(component.container).toHaveTextContent(blog.url)
+  })
 
-    const likeButton = component.container.querySelector('.like-btn');
-    await userEvent.click(likeButton);
-    await userEvent.click(likeButton);
+  test('clicking the like button twice calls event handler passed as a prop twice', () => {
+    const button = component.getByText('Like')
 
-    expect(mockLikesHandler.mock.calls).toHaveLength(2);
-  });
-});
+    act(() => {
+      fireEvent.click(button)
+      fireEvent.click(button)
+    })
+
+    expect(mockHandlerUpdate.mock.calls).toHaveLength(2)
+  })
+})

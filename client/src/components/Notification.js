@@ -1,11 +1,19 @@
-const Notification = ({ message }) => {
-  if (message === null) return null;
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './Notification.module.css';
 
-  if (message.includes('Error')) {
-    return <div className='error'>{message.substring(5)}</div>;
-  }
-
-  return <div className='success'>{message}</div>;
+const Notification = ({ message, type }) => {
+  if (!message) return null;
+  return (
+    <div className={type === 'error' ? styles.error : styles.notification}>
+      {message}
+    </div>
+  );
 };
 
 export default Notification;
+
+Notification.propTypes = {
+  className: PropTypes.string,
+  type: PropTypes.string.isRequired,
+};

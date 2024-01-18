@@ -6,14 +6,28 @@
   "author": "binh nguyen",
   "license": "ISC",
   "scripts": {
-    "build:pwsh": "pwsh build_steps.ps1",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.js\" \"**/*.json\"",
-    "start:test": "NODE_ENV=test node index.js"
+    "start:test": "NODE_ENV=test node index.js",
+    "build:client": "cd client && npm run build",
+    "build": "cd client && npm install && npm run build",
+    "lint:client": "cd client && npm run build",
+    "lint:all": "npm run lint && npm run lint:client",
+    "test:client": "cd client && npm run test",
+    "test:all": "npm run test && npm run test:client",
+    "test:e2e": "cd client && npm run test:e2e"
   },
+  "keywords": [
+    "fullstack-open-2024",
+    "nodejs",
+    "express",
+    "testing",
+    "react",
+    "github-actions"
+  ],
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
@@ -35,6 +49,10 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "globalTeardown": "./tests/teardown.js"
+    "globalTeardown": "./server/tests/teardown.js",
+    "testPathIgnorePatterns": [
+      "<rootDir>/client/",
+      "<rootDir>/node_modules/"
+    ]
   }
 }
