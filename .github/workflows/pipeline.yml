@@ -21,7 +21,7 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm run install:all
-            - name: lint
+      - name: lint
         run: npm run lint:all
       - name: build
         run: npm run build:client
