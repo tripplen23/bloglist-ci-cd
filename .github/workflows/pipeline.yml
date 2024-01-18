@@ -12,8 +12,11 @@ jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     env:
+      SKIP_PREFLIGHT_CHECK: true
       MONGO_URI: ${{ secrets.MONGO_URI }}
       TEST_MONGO_URI: ${{secrets.TEST_MONGO_URI}}
+      PORT: ${{secrets.PORT}}
+      SECRET: ${{secrets.SECRET}}
     steps:
       - uses: actions/checkout@v3 # Checkouts the project source code from Git
       - uses: actions/setup-node@v3
@@ -25,3 +28,14 @@ jobs:
         run: npm run build
       - name: test
         run: npm run test:all
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: |
+            npm run start:test &
+            wait-on http://localhost:3003
+            npm run start:client &
+            wait-on http://localhost:3000
+            npm run test:e2e
+          record: true
+          parallel: true
