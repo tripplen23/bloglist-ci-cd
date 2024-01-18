@@ -18,7 +18,8 @@
     "lint:all": "npm run lint && npm run lint:client",
     "test:client": "cd client && npm run test",
     "test:all": "npm run test && npm run test:client",
-    "test:e2e": "cd client && npm run test:e2e"
+    "test:e2e": "cd client && npm run test:e2e",
+    "install:all": "npm install && cd client && npm install"
   },
   "keywords": [
     "fullstack-open-2024",
