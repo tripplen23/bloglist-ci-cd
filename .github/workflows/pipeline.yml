@@ -18,12 +18,14 @@ jobs:
       PORT: ${{secrets.PORT}}
       SECRET: ${{secrets.SECRET}}
     steps:
-      - uses: actions/checkout@v3 # Checkouts the project source code from Git
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: Install dependencies
         run: npm install
+      - name: Install wait-on
+        run: npm install -g wait-on
       - name: Build client module
         run: npm run build
       - name: test
