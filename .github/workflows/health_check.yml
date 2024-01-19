@@ -1,0 +1,23 @@
+name: Scheduled health check
+on:
+  schedule:
+    - cron: '00 8 * * *'
+jobs:
+  health_check:
+    if: ${{ vars.HEALTH_CHECK_ACTIVE == 'true' }}
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check health url
+        uses: Jtalk/url-health-check-action@v3.2
+        with:
+          url: 'https://bloglist-fznf.onrender.com/health'
+      - name: report
+        if: always()
+        env:
+          status_ok: ${{ job.status == 'success' }}
+        run: |
+          if ${{ env.status_ok }}; then
+              echo "Health check ok"
+          else
+              echo "Health check fail"
+          fi
