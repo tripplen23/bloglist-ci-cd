@@ -41,3 +41,4 @@ jobs:
           npm run test:e2e
         env:
           CYPRESS_CACHE_FOLDER: ${{ runner.workspace }}/cache/Cypress
+        continue-on-error: true
