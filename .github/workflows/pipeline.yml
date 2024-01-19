@@ -28,14 +28,14 @@ jobs:
         run: npm run build
       - name: test
         run: npm run test:all
+      - name: Install Cypress
+        run: npx cypress install
       - name: e2e tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: |
-            npm run start:test &
-            wait-on http://localhost:3003
-            npm run start:client &
-            wait-on http://localhost:3000
-            npm run test:e2e
-          record: true
-          parallel: true
+        run: |
+          npm run start:test &
+          wait-on http://localhost:3003
+          npm run start:client &
+          wait-on http://localhost:3000
+          npm run test:e2e
+        env:
+          CYPRESS_CACHE_FOLDER: ${{ runner.workspace }}/cache/Cypress
