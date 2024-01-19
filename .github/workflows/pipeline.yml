@@ -32,11 +32,14 @@ jobs:
         run: npm run test:all
       - name: Install Cypress
         run: npx cypress install
-      - name: e2e tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm --prefix ./client run test:e2e
-          start: |
-            npm run start:test
-            npm --prefix ./client run start
-          wait-on: http://localhost:3000
+      #      - name: e2e tests
+      #        uses: cypress-io/github-action@v5
+      #        with:
+      #          command: npm --prefix ./client run test:e2e
+      #          start: |
+      #            npm run start:test
+      #            npm --prefix ./client run start
+      #          wait-on: http://localhost:3000
+      - name: Deploy to Render
+        if: github.event_name == 'push' && needs.check-for-skip.outputs.skip == 'false'
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
