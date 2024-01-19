@@ -44,8 +44,32 @@ jobs:
         if: github.event_name == 'push' && needs.check-for-skip.outputs.skip == 'false'
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
 
-  tag_release:
+  discord_success_message:
     needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    if: success()
+    steps:
+      - uses: rjstone/discord-webhook-notify@v1
+        with:
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
+          severity: info
+          text: 'A new version of Pokedex deployed'
+          details: 'Deployed to https://bloglist-fznf.onrender.com by ${{ github.actor }}'
+
+  discord_failure_message:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    if: failure()
+    steps:
+      - uses: rjstone/discord-webhook-notify@v1
+        with:
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
+          severity: error
+          text: 'Build failed'
+          details: 'commit ${{github.sha}} by ${{github.actor}} broke the build :('
+
+  tag_release:
+    needs: [simple_deployment_pipeline, discord_success_message]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
