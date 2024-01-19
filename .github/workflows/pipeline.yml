@@ -53,7 +53,7 @@ jobs:
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
           severity: info
-          text: 'A new version of Pokedex deployed'
+          text: 'A new version of Bloglist deployed'
           details: 'Deployed to https://bloglist-fznf.onrender.com by ${{ github.actor }}'
 
   discord_failure_message:
